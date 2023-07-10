@@ -1,5 +1,4 @@
 const express = require("express");
-const { body } = require("express-validator");
 
 const isAuth = require("../middlewares/is-auth");
 
@@ -7,20 +6,41 @@ const reservationController = require("../controllers/reservation");
 
 const router = express.Router();
 
-router.post("/reservation", reservationController.postReservation);
+router.post(
+  "/reservation",
+  isAuth(["user"]),
+  reservationController.postReservation
+);
 
-router.get("/reservations", reservationController.getReservations);
+router.get(
+  "/admin/reservations",
+  isAuth(["admin"]),
+  reservationController.getReservations
+);
 
-router.get("/reservation/:reservationId", reservationController.getReservation);
+router.get(
+  "/admin/reservation/:reservationId",
+  isAuth(["admin"]),
+  reservationController.getReservation
+);
 
 router.put(
-  "/reservation/:reservationId",
+  "/admin/reservation/:reservationId",
+  isAuth(["admin"]),
   reservationController.updateReservation
 );
 
 router.delete(
-  "/reservation/:reservationId",
+  "/admin/reservation/:reservationId",
+  isAuth(["admin"]),
   reservationController.deleteReservation
+);
+
+//Get user reservations
+router.get(
+  "/reservations",
+  isAuth(["user", "admin"]),
+  reservationController.getUserReservations
 );
 
 module.exports = router;

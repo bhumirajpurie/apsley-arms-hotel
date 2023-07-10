@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const errorHandler = require("../middlewares/error-handler");
 
+// Signup new user
 exports.signup = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -37,6 +38,7 @@ exports.signup = async (req, res, next) => {
   }
 };
 
+// Login user
 exports.login = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -65,7 +67,7 @@ exports.login = async (req, res, next) => {
         userRole: user.role.toString(),
       },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
 
     res.status(200).json({
@@ -79,4 +81,8 @@ exports.login = async (req, res, next) => {
     }
     next(err);
   }
+};
+
+exports.logout = (req, res, next) => {
+  //logout
 };

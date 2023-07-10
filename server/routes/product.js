@@ -6,32 +6,31 @@ const productController = require("../controllers/product");
 
 const router = express.Router();
 
+// Create new product
 router.post(
-  "/product",
+  "/admin/product",
   isAuth(["admin"]),
-  upload.single("image"),
+  upload.single("productImage"),
   productController.postProduct
 );
 
-router.get(
-  "/products", 
-  productController.getProducts
-);
+// Fetch all products
+router.get("/products", productController.getProducts);
 
-router.get(
-  "/product/:productId", 
-  productController.getProduct
-);
+// Fetch a product
+router.get("/product/:productId", productController.getProduct);
 
+// Update a product
 router.put(
-  "/product/:productId",
+  "/admin/product/:productId",
   isAuth(["admin"]),
-  upload.single("image"),
+  upload.single("productImage"),
   productController.updateProduct
 );
 
+// Remove a product
 router.delete(
-  "/product/:productId",
+  "/admin/product/:productId",
   isAuth(["admin"]),
   productController.deleteProduct
 );

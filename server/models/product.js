@@ -19,7 +19,7 @@ const productSchema = new Schema(
       require: true,
     },
   },
-  { timestamps: true }
+  { timestamps: false }
 );
 
 module.exports = model("Product", productSchema);

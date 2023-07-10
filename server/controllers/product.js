@@ -1,27 +1,30 @@
-const fs = require("fs");
-const path = require("path");
 const { validationResult } = require("express-validator");
 
-const Product = require("../models/product");
 const errorHandler = require("../middlewares/error-handler");
+const clearImage = require("../utils/clear-image");
 
+const Product = require("../models/product");
+
+//Create new product
 exports.postProduct = async (req, res, next) => {
   try {
+    // Input validation
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorMessage = errors.array()[0].msg;
       return errorHandler(errorMessage, 422);
     }
-
     if (!req.file) {
-      return errorHandler("Please provide a image", 422);
+      return errorHandler("Please provide a image.", 422);
     }
 
+    // Extract input data
     const name = req.body.name;
     const description = req.body.description;
     const price = req.body.price;
     const image = req.file.path;
 
+    // Create new product
     const product = new Product({
       name: name,
       description: description,
@@ -29,11 +32,14 @@ exports.postProduct = async (req, res, next) => {
       image: image,
     });
 
+    // Save the product
     const result = await product.save();
     console.log(result);
+
+    // Send response
     res
       .status(200)
-      .json({ message: "Product added successfully", product: result });
+      .json({ message: "Product added successfully.", product: result });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -42,23 +48,26 @@ exports.postProduct = async (req, res, next) => {
   }
 };
 
+// Fetch all products (pagination)
 exports.getProducts = async (req, res, next) => {
   try {
+    //Extract query param for pagination
     const currentPage = req.query.page || 1;
     const perPage = 5;
     const totalItems = await Product.countDocuments();
 
+    //Fetch all products
     const products = await Product.find()
       .skip((currentPage - 1) * perPage)
-      .limit(perPage)
-      .select("-createdAt -updatedAt -__v");
+      .limit(perPage);
 
     if (!products) {
-      return errorHandler("No product added yet!", 404);
+      return errorHandler("No product added yet.", 404);
     }
 
+    // Send response
     res.status(200).json({
-      message: "Products fetched successfully",
+      message: "Products fetched successfully.",
       products: products,
       totalItems: totalItems,
     });
@@ -70,17 +79,18 @@ exports.getProducts = async (req, res, next) => {
   }
 };
 
+// Fetch a single product
 exports.getProduct = async (req, res, next) => {
   try {
+    // Fetch single product
     const productId = req.params.productId;
-    const product = await Product.findById(productId).select(
-      "-createdAt -updatedAt -__v"
-    );
+    const product = await Product.findById(productId);
 
     if (!product) {
       return errorHandler("Could not find product.", 404);
     }
 
+    // Send response
     res
       .status(200)
       .json({ message: "Product fetched successfully", product: product });
@@ -92,78 +102,81 @@ exports.getProduct = async (req, res, next) => {
   }
 };
 
-exports.updateProduct = (req, res, next) => {
-  const productId = req.params.productId;
+// Update a product
+exports.updateProduct = async (req, res, next) => {
+  try {
+    // Validate input details
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const errorMessage = errors.array()[0].msg;
+      errorHandler(errorMessage, 422);
+    }
 
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const errorMessage = errors.array()[0].msg;
-    errorHandler(errorMessage, 422);
-  }
+    // Extract input data
+    const productId = req.params.productId;
+    const name = req.body.name;
+    const description = req.body.description;
+    const price = req.body.price;
+    let image = req.body.image;
 
-  const name = req.body.name;
-  const description = req.body.description;
-  const price = req.body.price;
-  let image = req.body.image;
+    if (req.file) {
+      image = req.file.path;
+    }
+    if (!image) {
+      errorHandler("No file picked.", 422);
+    }
 
-  if (req.file) {
-    image = req.file.path;
-  }
-
-  if (!image) {
-    errorHandler("No file picked", 422);
-  }
-
-  Product.findById(productId)
-    .then((product) => {
-      if (!product) {
-        errorHandler("Could not find product.", 404);
-      }
-      if (image !== product.image) {
-        clearImage(product.image);
-      }
-      product.name = name;
-      product.description = description;
-      product.price = price;
-      product.image = image;
-
-      return product.save();
-    })
-    .then((product) => {
-      res.status(200).json({ message: "Product updated.", product: product });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
-
-const clearImage = (filePath) => {
-  filePath = path.join(__dirname, "..", filePath);
-  fs.unlink(filePath, (err) => console.log(err));
-};
-
-exports.deleteProduct = (req, res, next) => {
-  const productId = req.params.productId;
-  Product.findById(productId)
-    .then((product) => {
-      if (!product) {
-        errorHandler("Could not find product.", 404);
-      }
-      //Check logged in user
+    // Fetch product
+    const product = await Product.findById(productId);
+    if (!product) {
+      errorHandler("Could not find product.", 404);
+    }
+    if (image !== product.image) {
       clearImage(product.image);
-      return Product.findByIdAndRemove(productId);
-    })
-    .then((result) => {
-      console.log(result);
-      res.status(200).json({ messge: "Product deleted." });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
+    }
+
+    // Update product details
+    product.name = name;
+    product.description = description;
+    product.price = price;
+    product.image = image;
+
+    // Save updated product
+    const updatedProduct = await product.save();
+
+    // Send response
+    res
+      .status(200)
+      .json({ message: "Product updated.", product: updatedProduct });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+//Delete a product
+exports.deleteProduct = async (req, res, next) => {
+  try {
+    //Fetch the product
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
+    if (!product) {
+      errorHandler("Could not find product.", 404);
+    }
+
+    clearImage(product.image);
+
+    //Remove the product
+    await Product.findByIdAndRemove(productId);
+
+    //Send response
+    res.status(200).json({ message: "Product deleted." });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 };

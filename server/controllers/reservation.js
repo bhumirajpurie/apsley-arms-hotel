@@ -6,34 +6,36 @@ const User = require("../models/user");
 const Room = require("../models/room");
 const Reservation = require("../models/reservation");
 
-//Create new reservation for user
+// Create new reservation for user
 exports.postReservation = async (req, res, next) => {
   try {
+    // Validate input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorMessage = errors.array()[0].msg;
       errorHandler(errorMessage, 422);
     }
 
-    //Find the user
-    const userId = req.body.userId;
+    // Find the user
+    const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) {
-      errorHandler("User not found!", 404);
+      errorHandler("User not found.", 404);
     }
 
-    //Find the room
+    // Find the room
     const roomId = req.body.roomId;
     const room = await Room.findById(roomId);
     if (!room) {
-      errorHandler("Room not found!", 404);
+      errorHandler("Room not found.", 404);
     }
 
-    // Create the reservation
+    // Extract input data
     const checkInDate = req.body.checkInDate;
     const checkOutDate = req.body.checkOutDate;
     const guests = req.body.guests;
 
+    // Create new reservation
     const reservation = new Reservation({
       userId: userId,
       roomId: roomId,
@@ -63,18 +65,24 @@ exports.postReservation = async (req, res, next) => {
   }
 };
 
-// Get all reservations with pagination
+// Get all reservations (pagination)
 exports.getReservations = async (req, res, next) => {
   try {
+    //Extract query param for pagination
     const currentPage = req.query.page || 1;
     const perPage = 5;
     const totalItems = await Reservation.find().countDocuments();
+
+    //Fetch all reservations
     const reservations = await Reservation.find()
       .skip((currentPage - 1) * perPage)
       .limit(perPage);
 
-    if (!reservations) errorHandler("No reservation made yet!", 404);
+    if (!reservations) {
+      errorHandler("No reservation made yet!", 404);
+    }
 
+    // Send response
     res.status(200).json({
       message: "Reservations Fetched!",
       reservations: reservations,
@@ -88,25 +96,29 @@ exports.getReservations = async (req, res, next) => {
   }
 };
 
-//Get a reservation
+// Fetch a single reservation
 exports.getReservation = async (req, res, next) => {
   try {
-    //Find the reservation
+    // Fetch the reservation
     const reservationId = req.params.reservationId;
     const reservation = await Reservation.findById(reservationId);
-    if (!reservation) errorHandler("Could not find reservation!", 404);
+
+    if (!reservation) {
+      errorHandler("Could not find reservation.", 404);
+    }
 
     //Send reponse
-    res
-      .status(200)
-      .json({ message: "Reservation fetch", reservation: reservation });
+    res.status(200).json({
+      message: "Reservation fetched successfully.",
+      reservation: reservation,
+    });
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);
   }
 };
 
-//Update a existing reservation
+// Update a reservation
 exports.updateReservation = async (req, res, next) => {
   try {
     // validate input details
@@ -119,14 +131,16 @@ exports.updateReservation = async (req, res, next) => {
     //Find the reservation
     const reservationId = req.params.reservationId;
     const reservation = await Reservation.findById(reservationId);
-    if (!reservation) errorHandler("Could not find reservation.", 404);
+    if (!reservation) {
+      errorHandler("Could not find reservation.", 404);
+    }
 
-    // Extract the reservation details
+    // Extract input data
     const checkInDate = req.body.checkInDate;
     const checkOutDate = req.body.checkOutDate;
     const guests = req.body.guests;
 
-    // Update the reservation details
+    // Update reservation details
     reservation.checkInDate = checkInDate;
     reservation.checkOutDate = checkOutDate;
     reservation.guests = guests;
@@ -144,23 +158,40 @@ exports.updateReservation = async (req, res, next) => {
   }
 };
 
-exports.deleteReservation = (req, res, next) => {
-  const reservationId = req.params.reservationId;
-  Reservation.findById(reservationId)
-    .then((reservation) => {
-      if (!reservation) {
-        errorHandler("Could not find reservation.", 404);
-      }
-      return Reservation.findByIdAndRemove(reservationId);
-    })
-    .then((result) => {
-      console.log(result);
-      res.status(200).json({ messge: "Reservation deleted." });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
+// Delete a reservation
+exports.deleteReservation = async (req, res, next) => {
+  try {
+    //Fetch the reservation
+    const reservationId = req.params.reservationId;
+    const reservation = await Reservation.findById(reservationId);
+    if (!reservation) {
+      errorHandler("Could not find reservation.", 404);
+    }
+
+    //Remove the reservation
+    await Reservation.findByIdAndRemove(reservationId);
+
+    //Send response
+    res.status(200).json({ messge: "Reservation deleted." });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+//Get user reservation
+exports.getUserReservations = async (req, res, next) => {
+  const userId = req.userId;
+  const user = await User.findById(userId);
+  if (!user) errorHandler("Could not find user.", 404);
+
+  const reservation = await user.getUserReservations();
+  if (!reservation) errorHandler("No reservation made yet.", 404);
+
+  res.status(200).json({
+    message: "Reservation fetched successfully.",
+    reservation: reservation,
+  });
 };

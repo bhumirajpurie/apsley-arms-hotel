@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
+const reservation = require("./reservation");
 
-const userSchema = Schema(
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -25,7 +26,41 @@ const userSchema = Schema(
       },
     ],
   },
-  { timeStamps: true }
+  { timeStamps: false }
 );
+
+userSchema.methods.getUserReservations = async function () {
+  try {
+    // await this.populate("reservation");
+    await this.populate({
+      path: "reservation",
+      populate: {
+        path: "roomId",
+        model: "Room",
+      },
+    });
+    return this.reservation;
+  } catch (error) {
+    console.log("Error retrieving user reservations:", error);
+    throw error;
+  }
+};
+
+// userSchema.methods.getUserReservations = async function () {
+//   try {
+//     // await this.populate("reservation");
+//     await this.populate({
+//       path: "reservation",
+//       populate: {
+//         path: "roomId",
+//         model: "Room",
+//       },
+//     });
+//     return this.reservation;
+//   } catch (error) {
+//     console.log("Error retrieving user reservations:", error);
+//     throw error;
+//   }
+// };
 
 module.exports = model("User", userSchema);

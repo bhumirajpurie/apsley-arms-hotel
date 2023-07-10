@@ -1,156 +1,163 @@
-const fs = require("fs");
-const path = require("path");
 const { validationResult } = require("express-validator");
 
 const Room = require("../models/room");
 const errorHandler = require("../middlewares/error-handler");
+const clearImage = require("../utils/clear-image");
 
-exports.postRoom = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const errorMessage = errors.array()[0].msg;
-    errorHandler(errorMessage, 422);
-  }
+// Create new room
+exports.postRoom = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    // Validate inputs
+    if (!errors.isEmpty()) {
+      const errorMessage = errors.array()[0].msg;
+      errorHandler(errorMessage, 422);
+    }
+    if (!req.file) {
+      errorHandler("No image provided", 422);
+    }
 
-  if (!req.file) {
-    errorHandler("No image provided", 422);
-  }
+    // Extract input data
+    const name = req.body.name;
+    const description = req.body.description;
+    const roomType = req.body.roomType;
+    const price = req.body.price;
+    const image = req.file.path;
 
-  const name = req.body.name;
-  const description = req.body.description;
-  const roomType = req.file.roomType;
-  const price = req.body.price;
-  const image = req.file.path;
-
-  const room = new Room({
-    name: name,
-    description: description,
-    roomType: roomType,
-    price: price,
-    image: image,
-  });
-
-  room
-    .save()
-    .then((result) => {
-      console.log(result);
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
+    // Create new room
+    const room = new Room({
+      name: name,
+      description: description,
+      roomType: roomType,
+      price: price,
+      image: image,
     });
-};
 
-exports.getRooms = (req, res, next) => {
-  Room.find()
-    .then((rooms) => {
-      if (!rooms) {
-        errorHandler("No room added", 404);
-      }
-      res.status(200).json({ message: "Rooms fetch", rooms: rooms });
-    })
-    .catch(() => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
+    // Save the created room
+    const result = await room.save();
+    console.log(result);
 
-exports.getRoom = (req, res, next) => {
-  const roomId = req.params.roomId;
-  Room.findById(roomId)
-    .then((room) => {
-      if (!room) {
-        errorHandler("Could not find room.", 404);
-      }
-      res.status(200).json({ message: "Room fetch", room: room });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
-
-exports.updateRoom = (req, res, next) => {
-  const roomId = req.params.roomId;
-
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const errorMessage = errors.array()[0].msg;
-    errorHandler(errorMessage, 422);
+    // Send response
+    res
+      .status(200)
+      .json({ message: "Room added successfully.", product: result });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
   }
-
-  const name = req.body.name;
-  const description = req.body.description;
-  const roomType = req.file.roomType;
-  const price = req.body.price;
-  let image = req.body.image;
-
-  if (req.file) {
-    image = req.file.path;
-  }
-
-  if (!image) {
-    errorHandler("No file picked", 422);
-  }
-
-  Room.findById(roomId)
-    .then((room) => {
-      if (!room) {
-        errorHandler("Could not find room.", 404);
-      }
-      if (image !== room.image) {
-        clearImage(room.image);
-      }
-      room.name = name;
-      room.description = description;
-      room.roomType = roomType;
-      room.price = price;
-      room.image = image;
-
-      return room.save();
-    })
-    .then((room) => {
-      res.status(200).json({ message: "Room updated.", room: room });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
 };
 
-const clearImage = (filePath) => {
-  filePath = path.join(__dirname, "..", filePath);
-  fs.unlink(filePath, (err) => console.log(err));
+// Fetch all rooms
+exports.getRooms = async (req, res, next) => {
+  try {
+    const rooms = await Room.find();
+    if (!rooms) {
+      errorHandler("No room added yet.", 404);
+    }
+    res
+      .status(200)
+      .json({ message: "Rooms fetched successfully.", rooms: rooms });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 };
 
-exports.deleteRoom = (req, res, next) => {
-  const roomId = req.params.roomId;
-  Room.findById(roomId)
-    .then((room) => {
-      if (!room) {
-        errorHandler("Could not find room.", 404);
-      }
+// Fetch a single room
+exports.getRoom = async (req, res, next) => {
+  try {
+    const roomId = req.params.roomId;
+    const room = await Room.findById(roomId);
+    if (!room) {
+      errorHandler("Could not find room.", 404);
+    }
+    res.status(200).json({ message: "Room fetch", room: room });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
 
+// Update a room
+exports.updateRoom = async (req, res, next) => {
+  try {
+    // Data validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const errorMessage = errors.array()[0].msg;
+      errorHandler(errorMessage, 422);
+    }
+
+    // Extract input data
+    const roomId = req.params.roomId;
+    const name = req.body.name;
+    const description = req.body.description;
+    const roomType = req.file.roomType;
+    const price = req.body.price;
+    let image = req.body.image;
+
+    if (req.file) {
+      image = req.file.path;
+    }
+    if (!image) {
+      errorHandler("No file picked.", 422);
+    }
+
+    // Fetch room
+    const room = await Room.findById(roomId);
+    if (!room) {
+      errorHandler("Could not find room.", 404);
+    }
+    if (image !== room.image) {
       clearImage(room.image);
-      return Room.findByIdAndRemove(roomId);
-    })
-    .then((result) => {
-      console.log(result);
-      res.status(200).json({ messge: "Product deleted." });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
+    }
+    // Update room details
+    room.name = name;
+    room.description = description;
+    room.roomType = roomType;
+    room.price = price;
+    room.image = image;
+
+    // Save updated room
+    const updatedRoom = await room.save();
+
+    // Send response
+    res.status(200).json({ message: "Room updated.", room: updatedRoom });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+// Delete a room
+exports.deleteRoom = async (req, res, next) => {
+  try {
+    //Fetch the room
+    const roomId = req.params.roomId;
+    const room = await Room.findById(roomId);
+    if (!room) {
+      errorHandler("Could not find room.", 404);
+    }
+
+    clearImage(room.image);
+
+    //Remove the room
+    await Room.findByIdAndRemove(roomId);
+
+    //Send response
+    res.status(200).json({ messge: "Room deleted." });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 };
