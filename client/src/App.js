@@ -6,7 +6,7 @@ import { Product } from "./components/Product";
 import { Receipe } from "./components/Receipe";
 import { Accomodation } from "./components/Accomodation";
 import { About } from "./components/About";
-import { Login } from "./components/Login";
+import {Login} from "./components/Login";
 import { Shoppingcart } from "./components/Shoppingcart";
 function App() {
   return (
