@@ -43,7 +43,7 @@ export const Navbar = () => {
         </div>
 
         <div className="corner-menu">
-          <Link to="/login">
+          <Link to="/register">
             <FaUser />
           </Link>
           <Link to="/cart">

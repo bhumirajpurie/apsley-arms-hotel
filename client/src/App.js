@@ -6,8 +6,9 @@ import { Product } from "./components/Product";
 import { Receipe } from "./components/Receipe";
 import { Accomodation } from "./components/Accomodation";
 import { About } from "./components/About";
-import { Login } from "./components/Login";
+// import { Login } from "./components/Login";
 import { Shoppingcart } from "./components/Shoppingcart";
+import SignUp from "./components/Signup";
 function App() {
   return (
     <div className="App">
@@ -19,7 +20,7 @@ function App() {
           <Route path="/receipe" element={<Receipe />} />
           <Route path="/about" element={<About />} />
           <Route path="/accomodation" element={<Accomodation />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/register" element={<SignUp />} />
           <Route path="/cart" element={<Shoppingcart />} />
         </Routes>
       </Router>
