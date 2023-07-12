@@ -1,110 +1,58 @@
-// const express = require("express");
-// const app = express();
-// app.use(express.json());
-
-// const mongoose = require("mongoose");
-
-// const mongoURL =
-//   "mongodb+srv://Aman:Aman@cluster0.up3sgqa.mongodb.net/?retryWrites=true&w=majority";
-
-// mongoose
-//   .connect(mongoURL, { useNewURLParser: true })
-//   .then(() => {
-//     console.log("database is connected");
-//   })
-//   .catch((err) => err);
-
-// app.listen(5000, () => {
-//   console.log("server starting");
-// });
-
-// app.post("/post", async (req, res) => {
-//   console.log(req.body);
-
-//   const { data } = req.body;
-//   try {
-//     if (data === "Aman") {
-//       res.send({ status: "ok" });
-//     } else {
-//       res.send({ status: "name not found" });
-//     }
-//   } catch (err) {
-//     res.send({ status: err });
-//   }
-// });
-
-// const express = require("express");
-// const app = express();
-// const mongoose = require("mongoose");
-// app.use(express.json());
-
-// app.listen(5000, () => {
-//   console.log("listening on port");
-// });
-
-// const mongoUrl =
-//   "mongodb+srv://Aman:Aman@cluster0.up3sgqa.mongodb.net/?retryWrites=true&w=majority";
-
-// mongoose
-//   .connect(mongoUrl, { useNewURLParser: true })
-//   .then((req, res) => {
-//     console.log("databasse is connected ");
-//   })
-//   .catch((err) => err);
-
-//   require('./userDetails')
-
-//   const User = mongoose.model('UserInfo')
-
-//   app.post('/register',async(req,res)=>{
-//     const {name,email,password}=req.body
-
-//     try{await User.create({
-//       uname:name,
-//       email:email,
-//       password:password
-//     })
-//     res.send({status:"okay"})
-
-//     } catch(err){
-//       console.log("Error")
-//     }
-//   })
+//Modules Imports
+require("dotenv").config();
+const path = require("path");
 const express = require("express");
-const app = express();
-app.use(express.json());
 const mongoose = require("mongoose");
-const cors = require("cors");
-app.use(cors());
 
-const mongoUrl =
-  "mongodb+srv://Aman:Aman@cluster0.up3sgqa.mongodb.net/?retryWrites=true&w=majority";
+//Local Imports
+const userRoutes = require("./routes/user");
+const productRoutes = require("./routes/product");
+const roomRoutes = require("./routes/room");
+const reservationRoutes = require("./routes/reservation");
 
-mongoose
-  .connect(mongoUrl, { useNewURLParser: true })
-  .then((req, res) => {
-    console.log("database connected successfully");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+//Express Application
+const app = express();
 
-require("./userDetails");
+//General Middleware
+app.use(express.json());
+app.use("/images", express.static(path.join(__dirname, "images")));
 
-const User = mongoose.model("UserInfo");
-app.post("/register", async (req, res) => {
-  const { fname, lname, email, password } = req.body;
-
-  try {
-    await User.create({
-      fname: fname,
-      lname: lname,
-      email: email,
-      password: password,
-    });
-    res.send({ status: "Succesfull" });
-  } catch (err) {
-    res.send({ status: "ERror" });
-    console.log("ERROR");
-  }
+//CORS Headers
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE",
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type",
+      "Authorization"
+    )
+  );
+  next();
 });
+
+//Routes Middleware
+app.use(userRoutes);
+app.use(productRoutes);
+app.use(roomRoutes);
+app.use(reservationRoutes);
+
+//Error Handler
+app.use((error, req, res, next) => {
+  console.log("Error Handler: ", error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  res.status(status).json({ message: message });
+});
+
+//Database Connection
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    //Create Server
+    app.listen(process.env.PORT, () => {
+      console.log(`Listening to PORT http://localhost:${process.env.PORT}`);
+    });
+  })
+  .catch((error) => console.log(error));
