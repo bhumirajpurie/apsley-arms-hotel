@@ -1,0 +1,33 @@
+.Heading{
+    color:green;
+    margin-left: 250px;
+    padding-top: 80px;
+    width: fit-content;
+}
+
+.Hotel{
+  margin-left: 100px;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.content{
+    width: fit-content;
+    color: black;
+
+
+}
+.position img{
+    float: right;
+    height: 300px;
+   margin-top: 145px;
+    width: fit-content;
+    border-radius: 50%;
+    
+    
+
+}
+.position{
+    position: absolute;
+    width: 70%;
+}
