@@ -9,7 +9,7 @@ export const About = () => {
     <h1>Our Apslay Arms</h1>
 
     <div className={styles.Hotel}>
-      <h1>Hotel</h1>    </div>
+      <h1>Hotel</h1></div>
       
      
       <div className={styles.cheif}>
@@ -17,16 +17,18 @@ export const About = () => {
       </div>
 
       <div className={styles.content}>
-      <p>A chef is a professional cook and tradesman who is proficient in all aspects 
-      of food preparation, often focusing on a particular
-       cuisine. The word "chef" is derived from the term chef de cuisine (French pronunciation: [ʃɛf də kɥizin]), the director or head of a kitchen. Chefs can receive formal training from an institution, as well as by apprenticing with an experienced chef.</p>
+       <p>hellow every one welcome to our hotel tou can find every<br/>
+         things over here enjor your food and the summer
+         hellow every one welcome to our hotel tou can find every<br/>
+         things over here enjor your food and the summer</p>
         
       </div>
 
-    
+     
        
 
     </div>
+    <button class={styles.contactbtn} >contact us</button>
     </div>
    
 )};
