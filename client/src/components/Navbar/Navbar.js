@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaPhone, FaShoppingCart, FaUser } from "react-icons/fa";
-import "./Navbar.css"; // Import the CSS file for Navbar styles
+import styles from "./Navbar.module.css";
 
-export const Navbar = () => {
+const Navbar = () => {
   return (
     <>
-      <nav className="navbar">
+      <nav className={styles.navbar}>
         <div>
-          <img src="/pizzas/logo-1.png" alt="Apsley Arms Hotel" />
+          <img src="/Images/1.png" alt="Apsley Arms Hotel" />
         </div>
 
         <div>
@@ -22,27 +22,31 @@ export const Navbar = () => {
             </li>
 
             <li>
-              <Link to="/receipe">Receipe</Link>
+              <Link to="/recipe">Recipe</Link>
             </li>
 
             <li>
               <Link to="/about">About</Link>
             </li>
             <li>
-              <Link to="/accomodation">Accomodation</Link>
+              <Link to="/accommodation">Accommodation</Link>
             </li>
           </ul>
         </div>
 
         <div>
-          <button className="special-offer-button">Special Offer</button>
+          <button className={styles["special-offer-button"]}>
+            Special Offer
+          </button>
         </div>
-        <div className="contact-info">
+        <div className={styles["contact-info"]}>
           <FaPhone />
           98104903834
         </div>
 
-        <div className="corner-menu">
+        <div className={styles["corner-menu"]}>
+          {" "}
+          {/* Use the 'corner-menu' class */}
           <Link to="/register">
             <FaUser />
           </Link>
@@ -54,3 +58,5 @@ export const Navbar = () => {
     </>
   );
 };
+
+export default Navbar;

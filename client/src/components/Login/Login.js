@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
 
-export default function Login() {
-  const [name, setName] = useState("");
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     const userData = {
-      name: name,
       email: email,
       password: password,
-      confirmPassword: confirmPassword,
     };
 
     try {
-      const response = await fetch("http://localhost:8080/signup", {
+      const response = await fetch("http://localhost:8081/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
-
       const data = await response.json();
-      console.log(data);
-      setMessage(data.message);
+      console.log(data.token);
+
+      if (response.ok) localStorage.setItem("token", data.token);
     } catch (error) {
       console.error(error);
     }
@@ -42,18 +37,7 @@ export default function Login() {
       </div>
       <div className={styles.signupform}>
         <form onSubmit={handleSubmit}>
-          <h2>Create Account</h2>
-          <h2>{message}</h2>
-          <div className={styles.formgroup}>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
+          <h2>Log Into Your Account</h2>
           <div className={styles.formgroup}>
             <label htmlFor="email">Email:</label>
             <input
@@ -74,28 +58,19 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className={styles.formgroup}>
-            <label htmlFor="confirmPassword">Confirm Password:</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
 
           <button type="submit" className={styles.submitbutton}>
-            Create Account
+            Log In
           </button>
           <p> or </p>
-          <a href="https://www.google.com">Sign up with Google</a>
-          <a href="https://www.google.com">sign up with facebook</a>
+
           <div>
-            Already have an account? <a href="/login">Login</a>
+            Do you have an account? <a href="/login">Signup</a>
           </div>
         </form>
       </div>
     </div>
   );
 }
+
+export default Login;

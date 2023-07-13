@@ -1,15 +1,15 @@
 import { useState } from "react";
-import "./registration.css";
+import "./Reservation.css";
 import FormInput from "./FormInput";
 
 const Registration = () => {
   const [values, setValues] = useState({
     username: "",
     email: "",
-    NumberOfGuest:"",
+    NumberOfGuest: "",
     ArrivalData: "",
-    DepartureDate:"",
-    SpecialRequest:""
+    DepartureDate: "",
+    SpecialRequest: "",
   });
 
   const inputs = [
@@ -34,15 +34,15 @@ const Registration = () => {
       required: true,
     },
     {
-        id: 3,
-        name: "Number of Guest",
-        type: "number",
-        placeholder: "Total number of guest",
-        errorMessage: "It should be a valid email address!",
-        label: "Number of Guest",
-        pattern: "[0-9]*",
-        required: true,
-      },
+      id: 3,
+      name: "Number of Guest",
+      type: "number",
+      placeholder: "Total number of guest",
+      errorMessage: "It should be a valid email address!",
+      label: "Number of Guest",
+      pattern: "[0-9]*",
+      required: true,
+    },
     {
       id: 4,
       name: "Arrival Data",
@@ -51,20 +51,20 @@ const Registration = () => {
       label: "ArrivalData",
     },
     {
-        id: 5,
-        name: "Departure Data",
-        type: "date",
-        placeholder: "Departure Data",
-        label: "DepartureData",
+      id: 5,
+      name: "Departure Data",
+      type: "date",
+      placeholder: "Departure Data",
+      label: "DepartureData",
     },
     {
-        id: 6,
-        name: "Special Request",
-        type: "box",
-        placeholder: "Any Special request",
-        errorMessage: "It should be a valid email address!",
-        label: "Special request",
-        required: true,
+      id: 6,
+      name: "Special Request",
+      type: "box",
+      placeholder: "Any Special request",
+      errorMessage: "It should be a valid email address!",
+      label: "Special request",
+      required: true,
     },
   ];
 
@@ -95,5 +95,3 @@ const Registration = () => {
 };
 
 export default Registration;
-
-
