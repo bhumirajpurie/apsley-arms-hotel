@@ -6,7 +6,7 @@ import { Product } from "./components/Product";
 import { Receipe } from "./components/Receipe";
 import  Accomodation  from "./components/Accomodation";
 import { About } from "./components/About";
-import { Login } from "./components/Login";
+import Login from "./components/Login";
 import { Shoppingcart } from "./components/Shoppingcart";
 import SignUp from "./components/Signup";
 import Registration from "./components/Registration";
@@ -23,6 +23,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/accomodation" element={<Accomodation />} />
           <Route path="/register" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<Shoppingcart />} />
           <Route path="/Registration" element={(<Registration/>)}/>
           <Route path="/FormInput" element={(<FormInput/>)}/>
