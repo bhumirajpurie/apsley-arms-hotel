@@ -1,188 +1,55 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
-import "./Accomodation.css";
-import { useNavigate } from "react-router-dom";
-function Accomodation() {
-  const navigate = useNavigate();
+import styles from "./Accomodation.module.css";
+    
+export const Accomodation = () => {
+   const[rooms, setRooms] = useState("");
+
+   async function fetchProduct() {
+     try {
+       const response = await fetch("http://localhost:8080/rooms");
+       // Authorization header is not needed in GET product/room hai, I've just put it here for reference
+       const responseData = await response.json();
+       console.log(responseData);
+       setRooms(responseData.rooms);
+     } catch (error) {
+       console.error(error);
+     }
+   }
+
+   useEffect(() => {
+     fetchProduct();
+   }, []);
+
   return (
-    <>
-      <Navbar />
-      <div className="reservation">
-        <h1>Reservation</h1>
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-
-        <div className="reserve">
-          <div className="text">
-            <h2>Room 1</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar,
-              lec tus ornare nascetur lacus egestas gravida potenti, congue nisi
-              ante nam rhoncus curae vestibulumtus ornare nascetur lacus egestas
-              gravida potenti, congue nisi ante nam rhoncus curae vestibulum.
-            </p>
-            <h3>price: 1000</h3>
-          </div>
-          <div className="image">
-            <img alt="img" src="./Images/1.png" />
-          </div>
-        </div>
-        <button class="button" onClick={() => navigate("/Registration")}>
-          Book now
-        </button>
-      </div>
-    </>
+    
+    <div>
+      <Navbar/>
+      {rooms
+        ? rooms.map((room) => (
+            <div className={styles.reservation} key={room._id}>
+              <h1>Available rooms</h1>
+              <div className={styles.reserve}> 
+                <div className={styles.text}>
+              <h1>{room.name}</h1>
+              <p>{room.description}</p>
+              <h2>{room.price}</h2>
+              <strong>{room.roomType}</strong>
+              </div>
+              <div className={styles.image}>
+              <img
+                src={`http://localhost:8080/${room.image}`}
+                alt={room.name}
+                width="200px" 
+              ></img>
+              </div>
+              </div>
+            </div>
+          ))
+        : "loading"}
+    </div>
   );
-}
+};
+      
 
-export default Accomodation;
+export default Accomodation
