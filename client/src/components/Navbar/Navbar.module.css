@@ -7,7 +7,7 @@
   }
   
   .navbar img {
-    height: 150px;
+    height: 80px;
   }
   
   .navbar ul {
@@ -21,6 +21,8 @@
   }
   
   .navbar ul li a {
+    font-weight: 600;
+    font-size: 15px;
     text-decoration: none;
     color: #333;
   }
@@ -30,8 +32,11 @@
     color: #333;
     border: none;
     border-radius: 10px;
-    padding: 10px 20px;
-    margin-left: 54px;
+    width: 155.311px;
+    height: 40px;
+    position: absolute;
+    top:21px;
+    left: 52%;
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: bold;
@@ -39,7 +44,7 @@
   
   
   .navbar .contact-info {
-    margin-right: 160px;
+    margin-right: -45px;
     font-family: 'Inter', sans-serif;
     font-size: 17px;
     color: #333;

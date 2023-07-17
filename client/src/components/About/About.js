@@ -1,30 +1,40 @@
 import React from "react";
-import styles from "./About.module.css";
+<<<<<<< HEAD:client/src/components/About/About.js
 
 const About = () => {
+  return <div>About</div>;
+};
+
+export default About;
+=======
+import styles from "./About.module.css";
+export const About = () => {
   return (
     <div className={styles.position}>
-      <img src="/pizzas/chef.jpg" alt="chefphoto" />
-      <div className={styles.Heading}>
-        <h1>Our Apslay Arms</h1>
-        <div className={styles.Hotel}>
-          <h1>Hotel</h1>
-        </div>
-        <div className={styles.cheif}>
-          <h1>Expert Kitchen Chef</h1>
-        </div>
-        <div className={styles.content}>
-          <p>
-            Hello everyone, welcome to our hotel. You can find everything over
-            here. Enjoy your food and the summer.
-          </p>
-          <p>
-            Hello everyone, welcome to our hotel. You can find everything over
-            here. Enjoy your food and the summer.
-          </p>
-        </div>
+   
+    <img src="/pizzas/chef.jpg" alt="chefphoto" />
+  <div className={styles.Heading}>
+    <h1>Our Apslay Arms</h1>
+
+    <div className={styles.Hotel}>
+      <h1>Hotel</h1></div>
+      
+     
+      <div className={styles.cheif}>
+        <h1> Expert kitchen Chef</h1>
       </div>
-      <button className={styles.contactbtn}>Contact Us</button>
+
+      <div className={styles.content}>
+       <p>hellow every one welcome to our hotel tou can find every<br/>
+         things over here enjor your food and the summer
+         hellow every one welcome to our hotel tou can find every<br/>
+         things over here enjor your food and the summer</p>
+        
+      </div>
+
+     
+       
+
     </div>
   );
 };

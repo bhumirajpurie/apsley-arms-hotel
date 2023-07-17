@@ -47,7 +47,7 @@ const Navbar = () => {
         <div className={styles["corner-menu"]}>
           {" "}
           {/* Use the 'corner-menu' class */}
-          <Link to="/register">
+          <Link to="/registration">
             <FaUser />
           </Link>
           <Link to="/cart">
