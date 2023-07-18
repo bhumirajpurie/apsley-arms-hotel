@@ -1,11 +1,16 @@
 import React from "react";
 import styles from "./About.module.css";
+
+
+
 const About = () => {
   return (
     <div className={styles.position}>
-      <img src="/pizzas/chef.jpg" alt="chefphoto" />
+      <img src="/images/chef.jpg" alt="chefphoto" />
       <div className={styles.Heading}>
         <h1>Our Apslay Arms</h1>
+
+
 
         <div className={styles.Hotel}>
           <h1>Hotel</h1>
@@ -27,6 +32,7 @@ const About = () => {
         </div>
       </div>
       <button class={styles.contactbtn}>contact us</button>
+
     </div>
   );
 };
