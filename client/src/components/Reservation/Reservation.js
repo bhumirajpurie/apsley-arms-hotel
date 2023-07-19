@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Reservation.css";
+import styles from "./Reservation.module.css";
 import FormInput from "./FormInput";
 
 const Registration = () => {
@@ -77,7 +77,7 @@ const Registration = () => {
   };
 
   return (
-    <div className="Registration">
+    <div className={styles.Registration}>
       <form onSubmit={handleSubmit}>
         <h1>Booking Room</h1>
         {inputs.map((input) => (
@@ -88,7 +88,7 @@ const Registration = () => {
             onChange={onChange}
           />
         ))}
-        <button>Submit</button>
+        <button className={styles.Submit}>Submit</button>
       </form>
     </div>
   );

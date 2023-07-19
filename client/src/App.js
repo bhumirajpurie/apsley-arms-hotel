@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import About from "./components/About/About";
-import Accommodation from "./components/Accomodation/Accomodation";
+import Accommodation from "./components/Accommodation/Accommodation";
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
 import Product from "./components/Products/Product";
@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/product" element={<Product />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/registration" element={<Registration />} />
-        <Route path="/accomodation" element={<Accommodation />} />
+        <Route path="/accommodation" element={<Accommodation />} />
         <Route path="/about" element={<About />} />
         <Route path="/recipe" element={<Recipe />} />
         <Route path="/adminProduct" element={<AdminProducts />} />
