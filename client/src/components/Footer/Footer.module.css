@@ -1,118 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins");
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* App.css */
-/* Normalize CSS styles */
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span,
-div,
-ul,
-ol,
-li,
-a,
-img {
-  margin: 0;
+*{
   padding: 0;
-  box-sizing: border-box;
+  margin: 0;
+  text-decoration:none ;
+  list-style: none;
+  font-family: 'work sans',sans-serif;
+
 }
 
-/* Container styles */
-.flex-container {
-  display: flex;
-  width: 100%;
-  gap: 1.75rem;
-  align-items: center;
-  justify-content: center;
+body{
+  height: 100px;
+
 }
 
-.left-side {
-  display: flex;
-  width: 50%;
+section{
+  padding: 100px;
+height: 100px;
+
 }
 
-.logo-container {
-  width: 30%;
+.footer{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+  gap:3.5rem;
+  background: green;
 }
-
-.logo {
-  width: 8rem;
-}
-
-.hotel-info {
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-}
-
-.right-side {
-  display: flex;
-  flex: 1;
-  padding: 2rem;
-  gap: 6rem;
-}
-
-.nav-container,
-.services-container,
-.follow-us-container {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-}
-
-/* Text styles */
-.font-bold {
-  font-weight: bold;
-}
-
-.font-poppins {
-  font-family: "Poppins", sans-serif;
-}
-
-/* Hover styles */
-.hover-text-blue-500:hover {
-  color: #3b82f6;
-}
-
-/* Social links */
-.social-links {
-  display: flex;
-  gap: 0.75rem;
-  width: 500px;
-}
-
-/* Footer */
-.footer-container {
-  display: flex;
-  align-items: center;
-  padding-bottom: 1.5rem;
-  padding-top: 3.5rem;
-  justify-content: center;
-}
-
-/* Copyright font styles */
-.font-copyrightFont {
-  font-family: "Your-Copyright-Font", sans-serif;
-  font-size: 14px;
-}
-
-/* Your other styles */
-
-
-
-
-
-
-
-
-
-
