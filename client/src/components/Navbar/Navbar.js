@@ -8,7 +8,7 @@ const Navbar = () => {
     <>
       <nav className={styles.navbar}>
         <div>
-          <img src="/Images/1.png" alt="Apsley Arms Hotel" />
+          <img src="./Images/logo.png" alt="Apsley Arms Hotel" />
         </div>
 
         <div>
@@ -45,8 +45,6 @@ const Navbar = () => {
         </div>
 
         <div className={styles["corner-menu"]}>
-          {" "}
-          {/* Use the 'corner-menu' class */}
           <Link to="/registration">
             <FaUser />
           </Link>

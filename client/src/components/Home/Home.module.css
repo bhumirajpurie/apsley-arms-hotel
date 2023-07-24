@@ -74,13 +74,12 @@
 
 .border{
   position: absolute;
-  top: -10%;
-  left: 45%;
-  width: 884px;
-  height: 900px;
-  border-radius: 900px;
-  border: 3px solid #DAE952;
-}
+    top: -8%;
+    left: 45%;
+    width: 800px;
+    height: 800px;
+    border-radius: 900px;
+    border: 3px solid #DAE952;}
 
   .image1 {
   width: 710px;

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import styles from "./Product.module.css";
     
-export const products = () => {
-   const[Products, setProducts] = useState("");  
+export const Products = () => {
+   const[products, setProducts] = useState("");  
 
    async function fetchProducts() {
      try {
        const response = await fetch("http://localhost:8081/products");
        const responseData = await response.json();
        console.log(responseData);
-       setProducts(responseData.Products);
+       setProducts(responseData.products);
      } catch (error) {
        console.error(error);
      }
@@ -25,15 +25,14 @@ export const products = () => {
     <div>
       <Navbar/>
       <h1>Available Products</h1>
-      {Products
-        ? Products.map((Product) => (
+      {products
+        ? products.map((Product) => (
             <div className={styles.reservation} key={Product._id}>
               <div className={styles.reserve}> 
                 <div className={styles.text}>
               <h1>{Product.name}</h1>
               <p>{Product.description}</p>
               <h2>{Product.price}</h2>
-              <strong>{Product.ProductType}</strong>
               </div>
               <div className={styles.image}>
               <img src={`http://localhost:8081/${Product.image}`} alt={Product.name}
